@@ -1,0 +1,2 @@
+# rqlite-dotnet
+.NET client
