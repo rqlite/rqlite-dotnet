@@ -1,0 +1,20 @@
+{
+  "results": [
+    {
+      "columns": [
+        "id",
+        "name"
+      ],
+      "types": [
+        "integer",
+        "text"
+      ],
+      "values": [
+        [
+          1,
+          "john"
+        ]
+      ]
+    }
+  ]
+}
