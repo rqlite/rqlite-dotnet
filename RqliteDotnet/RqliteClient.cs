@@ -46,10 +46,12 @@ public class RqliteClient
         return result;
     }
     
-    public async Task<QueryResults> QueryParams(string query, params QueryParameter[] qps)
+    public async Task<QueryResults> QueryParams<T>(string query, params T[] qps) where T: QueryParameter
     {
         var request = new HttpRequestMessage(HttpMethod.Post, "/db/query?pretty&timings");
-        var sb = new StringBuilder($"[[\"{query}\",");
+        var sb = new StringBuilder(typeof(T) == typeof(NamedQueryParameter) ?
+            $"[[\"{query}\",{{" :
+            $"[[\"{query}\",");
 
         foreach (var qp in qps)
         {
@@ -57,7 +59,7 @@ public class RqliteClient
         }
 
         sb.Length -= 1;
-        sb.Append("]]");
+        sb.Append(typeof(T) == typeof(NamedQueryParameter) ? "}]]" : "]]");
 
         request.Content = new StringContent(sb.ToString(), Encoding.UTF8, "application/json");
         var r = await _httpClient.SendAsync(request);
