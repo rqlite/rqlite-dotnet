@@ -53,7 +53,7 @@ public class RqliteClient
 
         foreach (var qp in qps)
         {
-            sb.Append(qp.ToParamString());
+            sb.Append(qp.ToParamString()+",");
         }
 
         sb.Length -= 1;
