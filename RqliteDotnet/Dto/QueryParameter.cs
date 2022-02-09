@@ -8,7 +8,7 @@ public class QueryParameter
 
     public virtual string ToParamString()
     {
-        return (ParamType == QueryParamType.Number ? Value : $"\"{Value}\"") + ",";
+        return (ParamType == QueryParamType.Number ? Value.ToString() : $"\"{Value}\"");
     }
 }
 
