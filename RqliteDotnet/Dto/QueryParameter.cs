@@ -2,15 +2,14 @@ namespace RqliteDotnet.Dto;
 
 public class QueryParameter
 {
-    public QueryParameter(object value)
-    {
-        ParamType = QueryParamType.String;
-        Value = value;
-    }
-    
     public QueryParamType ParamType { get; set; }
     
     public object Value { get; set; }
+
+    public virtual string ToParamString()
+    {
+        return (ParamType == QueryParamType.Number ? Value : $"\"{Value}\"") + ",";
+    }
 }
 
 public enum QueryParamType
