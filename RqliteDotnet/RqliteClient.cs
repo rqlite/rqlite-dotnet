@@ -25,7 +25,7 @@ public class RqliteClient
     public async Task<QueryResults> Query(string query)
     {
         var data = "&q="+Uri.EscapeDataString(query);
-        var baseUrl = "/db/query?pretty&timings";
+        var baseUrl = "/db/query?timings";
 
         var r = await _httpClient.GetAsync($"{baseUrl}&{data}");
         var str = await r.Content.ReadAsStringAsync();
@@ -36,7 +36,7 @@ public class RqliteClient
 
     public async Task<ExecuteResults> Execute(string command)
     {
-        var request = new HttpRequestMessage(HttpMethod.Post, "/db/execute?pretty&timings");
+        var request = new HttpRequestMessage(HttpMethod.Post, "/db/execute?timings");
         request.Content = new StringContent($"[\"{command}\"]", Encoding.UTF8, "application/json");
 
         var response = await _httpClient.SendAsync(request);
@@ -48,7 +48,7 @@ public class RqliteClient
     
     public async Task<QueryResults> QueryParams<T>(string query, params T[] qps) where T: QueryParameter
     {
-        var request = new HttpRequestMessage(HttpMethod.Post, "/db/query?pretty&timings");
+        var request = new HttpRequestMessage(HttpMethod.Post, "/db/query?timings");
         var sb = new StringBuilder(typeof(T) == typeof(NamedQueryParameter) ?
             $"[[\"{query}\",{{" :
             $"[[\"{query}\",");
