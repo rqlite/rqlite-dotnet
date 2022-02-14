@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>RqliteDotnet</id>
+        <version>1.0.0</version>
+        <authors>arthrp</authors>
+        <description>Client for Rqlite - lightweight distributed database</description>
+        <language>en-US</language>
+        <license type="expression">MIT</license>
+    </metadata>
+</package>
