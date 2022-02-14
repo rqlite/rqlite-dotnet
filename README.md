@@ -9,7 +9,7 @@ It supports the following features through Data API:
 
 ## Example
 
-```
+```csharp
 var client = new RqliteClient("http://localhost:4001"); //Assuming you have rqlite running on that port locally
 var version = await client.Ping();
 
