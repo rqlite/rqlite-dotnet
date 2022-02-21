@@ -2,7 +2,7 @@ namespace RqliteDotnet.Dto;
 
 public class NamedQueryParameter : QueryParameter
 {
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
     public override string ToParamString()
     {

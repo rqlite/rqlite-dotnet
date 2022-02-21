@@ -19,7 +19,7 @@ public class RqliteClient
     {
         var x = await _httpClient.GetAsync("/status");
 
-        return x.Headers.GetValues("X-Rqlite-Version").FirstOrDefault();
+        return x.Headers.GetValues("X-Rqlite-Version").FirstOrDefault()!;
     }
 
     public async Task<QueryResults> Query(string query)
@@ -72,7 +72,7 @@ public class RqliteClient
     public async Task<List<T>> Query<T>(string query) where T: new()
     {
         var response = await Query(query);
-        if (response.Results.Count > 1)
+        if (response.Results!.Count > 1)
             throw new DataException("Query returned more than 1 result. At the moment only 1 result supported");
         var res = response.Results[0];
         
