@@ -39,13 +39,10 @@ public class RqliteClient
         var request = new HttpRequestMessage(HttpMethod.Post, "/db/execute?timings");
         request.Content = new StringContent($"[\"{command}\"]", Encoding.UTF8, "application/json");
 
-        var response = await _httpClient.SendAsync(request);
-        var content = await response.Content.ReadAsStringAsync();
-
-        var result = JsonSerializer.Deserialize<ExecuteResults>(content, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+        var result = await _httpClient.SendTyped<ExecuteResults>(request);
         return result;
     }
-    
+
     public async Task<QueryResults> QueryParams<T>(string query, params T[] qps) where T: QueryParameter
     {
         var request = new HttpRequestMessage(HttpMethod.Post, "/db/query?timings");
@@ -62,10 +59,8 @@ public class RqliteClient
         sb.Append(typeof(T) == typeof(NamedQueryParameter) ? "}]]" : "]]");
 
         request.Content = new StringContent(sb.ToString(), Encoding.UTF8, "application/json");
-        var r = await _httpClient.SendAsync(request);
-        var content = await r.Content.ReadAsStringAsync();
+        var result = await _httpClient.SendTyped<QueryResults>(request);
 
-        var result = JsonSerializer.Deserialize<QueryResults>(content, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         return result;
     }
 
