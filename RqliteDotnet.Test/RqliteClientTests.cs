@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using NUnit.Framework;
+using RqliteDotnet.Dto;
 
 namespace RqliteDotnet.Test;
 
@@ -45,6 +46,21 @@ public class RqliteClientTests
         Assert.AreEqual(1, result.Results.Count);
         Assert.AreEqual(1, result.Results[0].RowsAffected);
         Assert.AreEqual(2, result.Results[0].LastInsertId);
+    }
+
+    [Test]
+    public async Task BasicQueryParam_Works()
+    {
+        var client = HttpClientMock.GetParamQueryMock();
+        
+        var rqClient = new RqliteClient("http://localhost:6000", client);
+        var result = await rqClient.QueryParams<QueryParameter>("select * from foo where name = ?", new QueryParameter()
+        {
+            ParamType = QueryParamType.String, Value = "john"
+        });
+        
+        Assert.AreEqual(1, result.Results.Count);
+        Assert.AreEqual(2, result.Results[0].Values[0].Count);
     }
 }
 

@@ -8,7 +8,7 @@ namespace RqliteDotnet;
 
 public class RqliteClient
 {
-    protected readonly HttpClient _httpClient;
+    private readonly HttpClient _httpClient;
 
     public RqliteClient(string uri, HttpClient? client = null)
     {
