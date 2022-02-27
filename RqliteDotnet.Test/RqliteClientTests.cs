@@ -26,7 +26,7 @@ public class RqliteClientTests
     {
         var client = HttpClientMock.GetQueryMock();
 
-        var rqClient = new RqliteClient("http://localhost:6000", client);
+        var rqClient = new RqliteOrmClient("http://localhost:6000", client);
         var queryresults = await rqClient.Query<FooResultDto>("select * from foo");
         
         Assert.AreEqual(1, queryresults.Count);

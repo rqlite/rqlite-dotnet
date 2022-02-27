@@ -20,3 +20,17 @@ var queryResults = await client.Query("select * from foo");
 
 var executeResults = await client.Execute("insert into foo (name) values('test')");
 ```
+
+There is also a basic ORM client similar to Dapper:
+```csharp
+public class FooResultDto
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+}
+
+var rqClient = new RqliteOrmClient("http://localhost:6000");
+
+var queryresults = await rqClient.Query<FooResultDto>("select * from foo"); //Returns List<FooResultDto>
+```
+You can see more examples in unit tests. NB: please report performance problems if any.

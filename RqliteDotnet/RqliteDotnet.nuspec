@@ -2,10 +2,11 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>RqliteDotnet</id>
-        <version>1.0.0</version>
-        <authors>arthrp</authors>
+        <version>1.0.1</version>
+        <authors>arthrp, otoolep et al.</authors>
         <description>Client for Rqlite - lightweight distributed database</description>
         <language>en-US</language>
         <license type="expression">MIT</license>
+        <projectUrl>https://github.com/rqlite/rqlite-dotnet/</projectUrl>
     </metadata>
 </package>
