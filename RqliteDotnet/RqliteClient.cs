@@ -43,6 +43,18 @@ public class RqliteClient
         return result;
     }
 
+    public async Task<ExecuteResults> Execute(IEnumerable<string> commands, DbFlag? flags)
+    {
+        var parameters = GetParameters(flags);
+        var request = new HttpRequestMessage(HttpMethod.Post, $"/db/execute{parameters}");
+        commands = commands.Select(c => $"\"{c}\"");
+        var s = string.Join(",", commands);
+
+        request.Content = new StringContent($"[{s}]", Encoding.UTF8, "application/json");
+        var result = await _httpClient.SendTyped<ExecuteResults>(request);
+        return result;
+    }
+
     public async Task<QueryResults> QueryParams<T>(string query, params T[] qps) where T: QueryParameter
     {
         var request = new HttpRequestMessage(HttpMethod.Post, "/db/query?timings");
@@ -91,6 +103,25 @@ public class RqliteClient
         }
 
         return list;
+    }
+
+    private string GetParameters(DbFlag? flags)
+    {
+        if (flags == null) return "";
+        var result = new StringBuilder("");
+
+        if ((flags & DbFlag.Timings) == DbFlag.Timings)
+        {
+            result.Append("&timings");
+        }
+
+        if ((flags & DbFlag.Transaction) == DbFlag.Transaction)
+        {
+            result.Append("&transation");
+        }
+
+        if (result.Length > 0) result[0] = '?';
+        return result.ToString();
     }
 
     private object GetValue(string valType, JsonElement el)
