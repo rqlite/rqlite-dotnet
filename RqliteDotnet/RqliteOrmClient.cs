@@ -7,7 +7,7 @@ public class RqliteOrmClient : RqliteClient
     public RqliteOrmClient(string uri, HttpClient? client = null) : base(uri, client) {}
     
     /// <summary>
-    /// Query Rqlite and return result as an instance of T
+    /// Query Rqlite DB and return result as an instance of T
     /// </summary>
     /// <param name="query">Query to execute</param>
     /// <typeparam name="T">Type of result object</typeparam>
@@ -30,9 +30,9 @@ public class RqliteOrmClient : RqliteClient
             foreach (var prop in typeof(T).GetProperties())
             {
                 var index = res.Columns.FindIndex(c => c.ToLower() == prop.Name.ToLower());
-                var x = GetValue(res.Types[index], res.Values[i][index]);
+                var val = GetValue(res.Types[index], res.Values[i][index]);
             
-                prop.SetValue(dto, x);
+                prop.SetValue(dto, val);
             }
             
             list.Add(dto);
