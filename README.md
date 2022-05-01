@@ -1,5 +1,5 @@
 # rqlite-dotnet
-![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/RqliteDotnet)
+[![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/RqliteDotnet)](https://www.nuget.org/packages/RqliteDotnet/)
 ![GitHub](https://img.shields.io/github/license/rqlite/rqlite-dotnet)
 
 .NET client for Rqlite - lightweight distributed database.
