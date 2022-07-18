@@ -4,7 +4,16 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
- 	<NuspecFile>RqliteDotnet.nuspec</NuspecFile>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <PackageId>RqliteDotnet</PackageId>
+        <Version>1.0.3</Version>
+        <Authors>arthrp, otoolep et al.</Authors>
+        <TargetFramework>net6.0</TargetFramework>
+        <Title>Rqlite Dotnet</Title>
+        <Description>.NET client for Rqlite - lightweight distributed database</Description>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/rqlite/rqlite-dotnet/</PackageProjectUrl>     
+    </PropertyGroup>
 </Project>
