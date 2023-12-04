@@ -15,6 +15,6 @@ public class NamedQueryParameter : QueryParameter
         {
             return "null";
         }
-        return (ParamType == QueryParamType.Number ? FormattableString.Invariant($"{Value:F3}") : $"\"{Value}\"");
+        return (ParamType == QueryParamType.Number ? FormattableString.Invariant($"{Value}") : $"\"{Value}\"");
     }
 }
