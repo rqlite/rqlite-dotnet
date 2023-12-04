@@ -6,6 +6,15 @@ public class NamedQueryParameter : QueryParameter
 
     public override string ToParamString()
     {
-        return $"\"{Name}\":" + (ParamType == QueryParamType.Number ? Value.ToString() : $"\"{Value}\"");
+        return $"\"{Name}\":" + PrintValue();
+    }
+
+    private string PrintValue()
+    {
+        if (Value == null)
+        {
+            return "null";
+        }
+        return (ParamType == QueryParamType.Number ? FormattableString.Invariant($"{Value}") : $"\"{Value}\"");
     }
 }
