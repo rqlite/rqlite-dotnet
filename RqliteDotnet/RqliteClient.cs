@@ -1,12 +1,18 @@
-﻿using System.Data;
-using System.Net;
+﻿using RqliteDotnet.Dto;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
-using RqliteDotnet.Dto;
+using System.Threading.Tasks;
 
 namespace RqliteDotnet;
 
-public class RqliteClient
+
+
+public class RqliteClient : IRqliteClient
 {
     private readonly HttpClient _httpClient;
 
@@ -15,6 +21,11 @@ public class RqliteClient
         _httpClient = client ?? new HttpClient(){ BaseAddress = new Uri(uri) };
     }
     
+    public RqliteClient(HttpClient client)
+    {
+        _httpClient = client ?? throw new ArgumentNullException(nameof(client));
+    }
+
     /// <summary>
     /// Ping Rqlite instance
     /// </summary>
@@ -25,14 +36,14 @@ public class RqliteClient
 
         return x.Headers.GetValues("X-Rqlite-Version").FirstOrDefault()!;
     }
-    
+
     /// <summary>
     /// Query DB and return result
     /// </summary>
     /// <param name="query"></param>
     public async Task<QueryResults> Query(string query)
     {
-        var data = "&q="+Uri.EscapeDataString(query);
+        var data = "&q=" + Uri.EscapeDataString(query);
         var baseUrl = "/db/query?timings";
 
         var r = await _httpClient.GetAsync($"{baseUrl}&{data}");
@@ -53,7 +64,7 @@ public class RqliteClient
         var result = await _httpClient.SendTyped<ExecuteResults>(request);
         return result;
     }
-    
+
     /// <summary>
     /// Execute one or several commands and return result
     /// </summary>
@@ -71,7 +82,25 @@ public class RqliteClient
         var result = await _httpClient.SendTyped<ExecuteResults>(request);
         return result;
     }
-    
+
+    /// <summary>
+    /// Execute one or several commands and return result
+    /// </summary>
+    /// <param name="commands">Commands to execute</param>
+    /// <param name="flags">Command flags, e.g. whether to use transaction</param>
+    /// <returns></returns>
+    public async Task<ExecuteResults> ExecuteParams<T>(IEnumerable<(string, T[])> commands, DbFlag? flags) where T : QueryParameter
+    {
+        var parameters = GetParameters(flags);
+        var request = new HttpRequestMessage(HttpMethod.Post, $"/db/execute{parameters}");
+        var compiled = commands.Select(c => $"{BuildQuery(c.Item1, c.Item2)}");
+        var s = string.Join(",", compiled);
+
+        request.Content = new StringContent($"[{s}]", Encoding.UTF8, "application/json");
+        var result = await _httpClient.SendTyped<ExecuteResults>(request);
+        return result;
+    }
+
     /// <summary>
     /// Query DB using parametrized statement
     /// </summary>
@@ -79,25 +108,29 @@ public class RqliteClient
     /// <param name="qps"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public async Task<QueryResults> QueryParams<T>(string query, params T[] qps) where T: QueryParameter
+    public async Task<QueryResults> QueryParams<T>(string query, params T[] qps) where T : QueryParameter
     {
         var request = new HttpRequestMessage(HttpMethod.Post, "/db/query?timings");
-        var sb = new StringBuilder(typeof(T) == typeof(NamedQueryParameter) ?
-            $"[[\"{query}\",{{" :
-            $"[[\"{query}\",");
+        var q = BuildQuery(query, qps);
 
-        foreach (var qp in qps)
-        {
-            sb.Append(qp.ToParamString()+",");
-        }
-
-        sb.Length -= 1;
-        sb.Append(typeof(T) == typeof(NamedQueryParameter) ? "}]]" : "]]");
-
-        request.Content = new StringContent(sb.ToString(), Encoding.UTF8, "application/json");
+        request.Content = new StringContent($"[{q}]", Encoding.UTF8, "application/json");
         var result = await _httpClient.SendTyped<QueryResults>(request);
 
         return result;
+    }
+
+    private static string BuildQuery<T>(string query, T[] qps) where T : QueryParameter
+    {
+        var sb = new StringBuilder(typeof(T) == typeof(NamedQueryParameter) ? $"[\"{query}\",{{" : $"[\"{query}\",");
+
+        foreach (var qp in qps)
+        {
+            sb.Append(qp.ToParamString() + ",");
+        }
+
+        sb.Length -= 1;
+        sb.Append(typeof(T) == typeof(NamedQueryParameter) ? "}]" : "]");
+        return sb.ToString();
     }
 
     private string GetParameters(DbFlag? flags)
@@ -121,12 +154,17 @@ public class RqliteClient
 
     protected object GetValue(string valType, JsonElement el)
     {
-        object? x = valType switch
+        if (el.ValueKind == JsonValueKind.Null)
+        {
+            return null;
+        }
+        object x = valType switch
         {
             "text" => el.GetString(),
-            "integer" or "numeric" => el.GetInt32(),
+            "integer" or "numeric" or "int" => el.GetInt32(),
             "real" => el.GetDouble(),
-            _ => throw new ArgumentException("Unsupported type")
+            "bigint" => el.GetInt64(),
+            _ => throw new ArgumentException($"Unsupported type {valType}")
         };
 
         return x;

@@ -9,7 +9,10 @@ public static class HttpClientExtensions
         var response = await client.SendAsync(request);
         var content = await response.Content.ReadAsStringAsync();
 
+        response.EnsureSuccessStatusCode();
+
         var result = JsonSerializer.Deserialize<T>(content, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-        return result;
+
+        return result!;
     }
 }
