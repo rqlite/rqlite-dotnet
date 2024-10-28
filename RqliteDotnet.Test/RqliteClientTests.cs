@@ -14,12 +14,12 @@ public class RqliteClientTests
         var rqClient = new RqliteClient("http://localhost:6000", client);
         var queryresult = await rqClient.Query("select * from foo");
         
-        Assert.AreEqual(1, queryresult.Results.Count);
-        Assert.AreEqual(2, queryresult.Results[0].Columns.Count);
-        Assert.AreEqual("id", queryresult.Results[0].Columns[0]);
-        Assert.AreEqual("name", queryresult.Results[0].Columns[1]);
-        Assert.AreEqual(2, queryresult.Results[0].Types.Count);
-        Assert.AreEqual(1, queryresult.Results[0].Values.Count);
+        Assert.That(queryresult!.Results!.Count, Is.EqualTo(1));
+        Assert.That(queryresult!.Results[0]!.Columns!.Count, Is.EqualTo(2));
+        Assert.That(queryresult.Results[0].Columns[0], Is.EqualTo("id"));
+        Assert.That(queryresult.Results[0].Columns[1], Is.EqualTo("name"));
+        Assert.That(queryresult!.Results[0]!.Types!.Count, Is.EqualTo(2));
+        Assert.That(queryresult!.Results[0]!.Values!.Count, Is.EqualTo(1));
     }
 
     [Test]
@@ -30,9 +30,9 @@ public class RqliteClientTests
         var rqClient = new RqliteOrmClient("http://localhost:6000", client);
         var queryresults = await rqClient.Query<FooResultDto>("select * from foo");
         
-        Assert.AreEqual(1, queryresults.Count);
-        Assert.AreEqual(1, queryresults[0].Id);
-        Assert.AreEqual("john", queryresults[0].Name);
+        Assert.That(queryresults.Count, Is.EqualTo(1));
+        Assert.That(queryresults[0].Id, Is.EqualTo(1));
+        Assert.That(queryresults[0].Name, Is.EqualTo("john"));
     }
     
     [Test]
@@ -49,9 +49,9 @@ public class RqliteClientTests
                 Value = "john"
             });
         
-        Assert.AreEqual(1, queryresults.Count);
-        Assert.AreEqual(1, queryresults[0].Id);
-        Assert.AreEqual("john", queryresults[0].Name);
+        Assert.That(queryresults.Count, Is.EqualTo(1));
+        Assert.That(queryresults[0].Id, Is.EqualTo(1));
+        Assert.That(queryresults[0].Name, Is.EqualTo("john"));
     }
 
     [Test]
@@ -62,9 +62,9 @@ public class RqliteClientTests
         var rqClient = new RqliteClient("http://localhost:6000", client);
         var result = await rqClient.Execute("create table newfoo (id integer primary key not null)");
         
-        Assert.AreEqual(1, result.Results.Count);
-        Assert.AreEqual(1, result.Results[0].RowsAffected);
-        Assert.AreEqual(2, result.Results[0].LastInsertId);
+        Assert.That(result!.Results!.Count, Is.EqualTo(1));
+        Assert.That(result.Results[0].RowsAffected, Is.EqualTo(1));
+        Assert.That(result.Results[0].LastInsertId, Is.EqualTo(2));
     }
     
     [Test]
@@ -81,9 +81,9 @@ public class RqliteClientTests
                     }
                     )}, DbFlag.Transaction);
         
-        Assert.AreEqual(1, result.Results.Count);
-        Assert.AreEqual(1, result.Results[0].RowsAffected);
-        Assert.AreEqual(2, result.Results[0].LastInsertId);
+        Assert.That(result!.Results!.Count, Is.EqualTo(1));
+        Assert.That(result.Results[0].RowsAffected, Is.EqualTo(1));
+        Assert.That(result.Results[0].LastInsertId, Is.EqualTo(2));
     }
 
     [Test]
@@ -97,8 +97,8 @@ public class RqliteClientTests
             ParamType = QueryParamType.String, Value = "john"
         });
         
-        Assert.AreEqual(1, result.Results.Count);
-        Assert.AreEqual(2, result.Results[0].Values[0].Count);
+        Assert.That(result!.Results!.Count, Is.EqualTo(1));
+        Assert.That(result!.Results[0]!.Values[0]!.Count, Is.EqualTo(2));
     }
 }
 

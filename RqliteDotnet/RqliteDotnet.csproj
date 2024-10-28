@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
@@ -10,7 +10,7 @@
         <PackageId>RqliteDotnet</PackageId>
         <Version>1.0.3</Version>
         <Authors>arthrp, otoolep et al.</Authors>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
         <Title>Rqlite Dotnet</Title>
         <Description>.NET client for Rqlite - lightweight distributed database</Description>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
