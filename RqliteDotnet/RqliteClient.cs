@@ -10,8 +10,6 @@ using System.Threading.Tasks;
 
 namespace RqliteDotnet;
 
-
-
 public class RqliteClient : IRqliteClient
 {
     private readonly HttpClient _httpClient;
