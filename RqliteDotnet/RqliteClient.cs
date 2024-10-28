@@ -152,13 +152,13 @@ public class RqliteClient : IRqliteClient
         return result.ToString();
     }
 
-    protected object GetValue(string valType, JsonElement el)
+    protected object? GetValue(string valType, JsonElement el)
     {
         if (el.ValueKind == JsonValueKind.Null)
         {
             return null;
         }
-        object x = valType switch
+        object? x = valType switch
         {
             "text" => el.GetString(),
             "integer" or "numeric" or "int" => el.GetInt32(),
