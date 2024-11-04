@@ -23,53 +23,40 @@ public class RqliteClient : IRqliteClient
     {
         _httpClient = client ?? throw new ArgumentNullException(nameof(client));
     }
-
-    /// <summary>
-    /// Ping Rqlite instance
-    /// </summary>
-    /// <returns>String containining Rqlite version</returns>
-    public async Task<string> Ping()
+    
+    /// <inheritdoc />
+    public async Task<string> Ping(CancellationToken cancellationToken = default)
     {
-        var x = await _httpClient.GetAsync("/status");
+        var x = await _httpClient.GetAsync("/status", cancellationToken);
 
         return x.Headers.GetValues("X-Rqlite-Version").FirstOrDefault()!;
     }
-
-    /// <summary>
-    /// Query DB and return result
-    /// </summary>
-    /// <param name="query"></param>
-    public async Task<QueryResults> Query(string query)
+    
+    /// <inheritdoc />
+    public async Task<QueryResults> Query(string query, CancellationToken cancellationToken = default)
     {
         var data = "&q=" + Uri.EscapeDataString(query);
         var baseUrl = "/db/query?timings";
 
-        var r = await _httpClient.GetAsync($"{baseUrl}&{data}");
-        var str = await r.Content.ReadAsStringAsync();
+        var r = await _httpClient.GetAsync($"{baseUrl}&{data}", cancellationToken);
+        var str = await r.Content.ReadAsStringAsync(cancellationToken);
 
         var result = JsonSerializer.Deserialize<QueryResults>(str, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         return result;
     }
 
-    /// <summary>
-    /// Execute command and return result
-    /// </summary>
-    public async Task<ExecuteResults> Execute(string command)
+    /// <inheritdoc />
+    public async Task<ExecuteResults> Execute(string command, CancellationToken cancellationToken = default)
     {
         var request = new HttpRequestMessage(HttpMethod.Post, "/db/execute?timings");
         request.Content = new StringContent($"[\"{command}\"]", Encoding.UTF8, "application/json");
 
-        var result = await _httpClient.SendTyped<ExecuteResults>(request);
+        var result = await _httpClient.SendTyped<ExecuteResults>(request, cancellationToken);
         return result;
     }
 
-    /// <summary>
-    /// Execute one or several commands and return result
-    /// </summary>
-    /// <param name="commands">Commands to execute</param>
-    /// <param name="flags">Command flags, e.g. whether to use transaction</param>
-    /// <returns></returns>
-    public async Task<ExecuteResults> Execute(IEnumerable<string> commands, DbFlag? flags)
+    /// <inheritdoc />
+    public async Task<ExecuteResults> Execute(IEnumerable<string> commands, DbFlag? flags, CancellationToken cancellationToken = default)
     {
         var parameters = GetParameters(flags);
         var request = new HttpRequestMessage(HttpMethod.Post, $"/db/execute{parameters}");
@@ -77,17 +64,12 @@ public class RqliteClient : IRqliteClient
         var s = string.Join(",", commands);
 
         request.Content = new StringContent($"[{s}]", Encoding.UTF8, "application/json");
-        var result = await _httpClient.SendTyped<ExecuteResults>(request);
+        var result = await _httpClient.SendTyped<ExecuteResults>(request, cancellationToken);
         return result;
     }
 
-    /// <summary>
-    /// Execute one or several commands and return result
-    /// </summary>
-    /// <param name="commands">Commands to execute</param>
-    /// <param name="flags">Command flags, e.g. whether to use transaction</param>
-    /// <returns></returns>
-    public async Task<ExecuteResults> ExecuteParams<T>(IEnumerable<(string, T[])> commands, DbFlag? flags) where T : QueryParameter
+    /// <inheritdoc />
+    public async Task<ExecuteResults> ExecuteParams<T>(IEnumerable<(string, T[])> commands, DbFlag? flags, CancellationToken cancellationToken = default) where T : QueryParameter
     {
         var parameters = GetParameters(flags);
         var request = new HttpRequestMessage(HttpMethod.Post, $"/db/execute{parameters}");
@@ -95,24 +77,18 @@ public class RqliteClient : IRqliteClient
         var s = string.Join(",", compiled);
 
         request.Content = new StringContent($"[{s}]", Encoding.UTF8, "application/json");
-        var result = await _httpClient.SendTyped<ExecuteResults>(request);
+        var result = await _httpClient.SendTyped<ExecuteResults>(request, cancellationToken);
         return result;
     }
 
-    /// <summary>
-    /// Query DB using parametrized statement
-    /// </summary>
-    /// <param name="query"></param>
-    /// <param name="qps"></param>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
-    public async Task<QueryResults> QueryParams<T>(string query, params T[] qps) where T : QueryParameter
+    /// <inheritdoc />
+    public async Task<QueryResults> QueryParams<T>(string query, CancellationToken cancellationToken = default, params T[] qps) where T : QueryParameter
     {
         var request = new HttpRequestMessage(HttpMethod.Post, "/db/query?timings");
         var q = BuildQuery(query, qps);
 
         request.Content = new StringContent($"[{q}]", Encoding.UTF8, "application/json");
-        var result = await _httpClient.SendTyped<QueryResults>(request);
+        var result = await _httpClient.SendTyped<QueryResults>(request, cancellationToken);
 
         return result;
     }

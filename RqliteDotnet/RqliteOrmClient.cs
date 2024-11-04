@@ -13,7 +13,7 @@ public interface IRqliteOrmClient : IRqliteClient
     /// <returns></returns>
     Task<List<T>> Query<T>(string query) where T: new();
 
-    Task<List<U>> QueryParams<T, U>(string query, params T[] qps) 
+    Task<List<U>> QueryParams<T, U>(string query, CancellationToken cancellationToken, params T[] qps) 
         where T: QueryParameter 
         where U : new();
 }
@@ -59,11 +59,11 @@ public class RqliteOrmClient : RqliteClient, IRqliteOrmClient
         return list;
     }
 
-    public async Task<List<U>> QueryParams<T, U>(string query, params T[] qps)
+    public async Task<List<U>> QueryParams<T, U>(string query, CancellationToken cancellationToken, params T[] qps)
         where T : QueryParameter
         where U : new()
     {
-        var response = await QueryParams(query, qps);
+        var response = await QueryParams(query, cancellationToken, qps);
         if (response.Results!.Count > 1)
             throw new DataException("Query returned more than 1 result. At the moment only 1 result supported");
         var res = response.Results[0];

@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using RqliteDotnet.Dto;
@@ -41,7 +42,8 @@ public class RqliteClientTests
         var client = HttpClientMock.GetParamQueryMock();
 
         var rqClient = new RqliteOrmClient("http://localhost:6000", client);
-        var queryresults = await rqClient.QueryParams<NamedQueryParameter, FooResultDto>("select * from foo where Name = :name", 
+        var queryresults = await rqClient.QueryParams<NamedQueryParameter, FooResultDto>("select * from foo where Name = :name",
+            default(CancellationToken),
             new NamedQueryParameter()
             {
                 Name = "name", 
@@ -92,7 +94,7 @@ public class RqliteClientTests
         var client = HttpClientMock.GetParamQueryMock();
         
         var rqClient = new RqliteClient("http://localhost:6000", client);
-        var result = await rqClient.QueryParams<QueryParameter>("select * from foo where name = ?", new QueryParameter()
+        var result = await rqClient.QueryParams<QueryParameter>("select * from foo where name = ?", default(CancellationToken), new QueryParameter()
         {
             ParamType = QueryParamType.String, Value = "john"
         });
