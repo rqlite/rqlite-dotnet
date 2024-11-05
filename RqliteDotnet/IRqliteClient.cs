@@ -14,9 +14,10 @@ public interface IRqliteClient
     /// Query DB and return result
     /// </summary>
     /// <param name="query">Query to run</param>
+    /// <param name="level"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<QueryResults> Query(string query, CancellationToken cancellationToken);
+    Task<QueryResults> Query(string query, ReadLevel level, CancellationToken cancellationToken);
 
     /// <summary>
     /// Execute command and return result

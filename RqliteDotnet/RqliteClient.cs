@@ -33,12 +33,11 @@ public class RqliteClient : IRqliteClient
     }
     
     /// <inheritdoc />
-    public async Task<QueryResults> Query(string query, CancellationToken cancellationToken = default)
+    public async Task<QueryResults> Query(string query, ReadLevel level = ReadLevel.Default, CancellationToken cancellationToken = default)
     {
-        var data = "&q=" + Uri.EscapeDataString(query);
-        var baseUrl = "/db/query?timings";
+        var url = UrlBuilder.Build("/db/query?timings", query, level);
 
-        var r = await _httpClient.GetAsync($"{baseUrl}&{data}", cancellationToken);
+        var r = await _httpClient.GetAsync(url, cancellationToken);
         var str = await r.Content.ReadAsStringAsync(cancellationToken);
 
         var result = JsonSerializer.Deserialize<QueryResults>(str, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
