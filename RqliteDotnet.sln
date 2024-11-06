@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RqliteDotnetExample", "Rqli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RqliteDotnet.Test", "RqliteDotnet.Test\RqliteDotnet.Test.csproj", "{694FCE70-640F-4CAD-852A-4D9031600ADC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RqliteDotnet.IntegrationTest", "RqliteDotnet.IntegrationTest\RqliteDotnet.IntegrationTest.csproj", "{949312B5-5476-4AEA-9669-CD6CE44B6242}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{694FCE70-640F-4CAD-852A-4D9031600ADC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{694FCE70-640F-4CAD-852A-4D9031600ADC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{694FCE70-640F-4CAD-852A-4D9031600ADC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{949312B5-5476-4AEA-9669-CD6CE44B6242}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{949312B5-5476-4AEA-9669-CD6CE44B6242}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{949312B5-5476-4AEA-9669-CD6CE44B6242}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{949312B5-5476-4AEA-9669-CD6CE44B6242}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
