@@ -19,7 +19,8 @@ public static class UrlBuilder
             ReadLevel.Linearizable => "&level=linearizable",
             ReadLevel.Strong => "&level=strong",
             ReadLevel.None => "&level=none",
-            ReadLevel.Auto => "&level=auto"
+            ReadLevel.Auto => "&level=auto",
+            _ => throw new ArgumentException("Unknown read level")
         };
         return result;
     }
