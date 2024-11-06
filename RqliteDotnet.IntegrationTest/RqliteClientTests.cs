@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using DotNet.Testcontainers.Builders;
 using NUnit.Framework;
 
@@ -24,5 +25,6 @@ public class RqliteClientTests
         var version = await client.Ping();
         
         Assert.That(version, Is.Not.Empty);
+        Assert.That(Regex.IsMatch(version, @"v\d+.\d+.+")); //v8.10.1
     }
 }
