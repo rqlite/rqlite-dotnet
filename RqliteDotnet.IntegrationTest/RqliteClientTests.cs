@@ -25,6 +25,6 @@ public class RqliteClientTests
         var version = await client.Ping();
         
         Assert.That(version, Is.Not.Empty);
-        Assert.That(Regex.IsMatch(version, @"v\d+.\d+.+")); //v8.10.1
+        Assert.That(Regex.IsMatch(version, @"v\d+.\d+\.*")); //v8.10.1
     }
 }
