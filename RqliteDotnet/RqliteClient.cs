@@ -33,7 +33,7 @@ public class RqliteClient : IRqliteClient
     }
     
     /// <inheritdoc />
-    public async Task<QueryResults> Query(string query, ReadLevel level = ReadLevel.Default, CancellationToken cancellationToken = default)
+    public async Task<QueryResults?> Query(string query, ReadLevel level = ReadLevel.Default, CancellationToken cancellationToken = default)
     {
         var url = UrlBuilder.Build("/db/query?timings", query, level);
 
