@@ -17,7 +17,7 @@ public interface IRqliteClient
     /// <param name="level"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<QueryResults> Query(string query, ReadLevel level, CancellationToken cancellationToken);
+    Task<QueryResults?> Query(string query, ReadLevel level, CancellationToken cancellationToken);
 
     /// <summary>
     /// Execute command and return result

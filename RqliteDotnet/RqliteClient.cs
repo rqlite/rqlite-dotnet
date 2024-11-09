@@ -1,12 +1,6 @@
 ﻿using RqliteDotnet.Dto;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace RqliteDotnet;
 
@@ -33,7 +27,7 @@ public class RqliteClient : IRqliteClient
     }
     
     /// <inheritdoc />
-    public async Task<QueryResults> Query(string query, ReadLevel level = ReadLevel.Default, CancellationToken cancellationToken = default)
+    public async Task<QueryResults?> Query(string query, ReadLevel level = ReadLevel.Default, CancellationToken cancellationToken = default)
     {
         var url = UrlBuilder.Build("/db/query?timings", query, level);
 
