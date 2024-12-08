@@ -5,8 +5,6 @@ namespace RqliteDotnet;
 
 public class RqliteOrmClient : RqliteClient, IRqliteOrmClient
 {
-    public RqliteOrmClient(HttpClient client) : base(client) { }
-
     public RqliteOrmClient(string uri, HttpClient? client = null) : base(uri, client) {}
 
     /// <inheritdoc />

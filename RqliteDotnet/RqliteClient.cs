@@ -8,9 +8,20 @@ public class RqliteClient : IRqliteClient
 {
     private readonly HttpClient _httpClient;
 
-    public RqliteClient(string uri, HttpClient? client = null)
+    /// <summary>
+    /// Returns new RqliteClient
+    /// </summary>
+    /// <param name="uri">URI where rqlite instance is running</param>
+    /// <param name="client">Http client to use instead of default one</param>
+    /// <param name="basicAuthInfo">Basic auth string (username:password) that is base64 encoded and sent in Authorization header. If empty the header is not sent</param>
+    public RqliteClient(string uri, HttpClient? client = null, string basicAuthInfo = "")
     {
         _httpClient = client ?? new HttpClient(){ BaseAddress = new Uri(uri) };
+        if (!string.IsNullOrEmpty(basicAuthInfo))
+        {
+            var encoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(basicAuthInfo));
+            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Basic {encoded}");
+        }
     }
     
     public RqliteClient(HttpClient client)
