@@ -13,7 +13,7 @@ public class RqliteClient : IRqliteClient
     /// </summary>
     /// <param name="uri">URI where rqlite instance is running</param>
     /// <param name="client">Http client to use instead of default one</param>
-    /// <param name="basicAuthInfo">Basic auth string (username:password) that is base64 encoded and sent in Authorization header. If empty the header is not set</param>
+    /// <param name="basicAuthInfo">Basic auth string (username:password) that is base64 encoded and sent in Authorization header. If empty the header is not sent</param>
     public RqliteClient(string uri, HttpClient? client = null, string basicAuthInfo = "")
     {
         _httpClient = client ?? new HttpClient(){ BaseAddress = new Uri(uri) };
