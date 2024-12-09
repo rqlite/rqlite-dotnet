@@ -8,12 +8,17 @@
 
     <PropertyGroup>
         <PackageId>RqliteDotnet</PackageId>
-        <Version>1.0.6</Version>
+        <Version>1.0.7</Version>
         <Authors>arthrp, otoolep et al.</Authors>
         <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
         <Title>Rqlite Dotnet</Title>
         <Description>.NET client for Rqlite - lightweight distributed database</Description>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageProjectUrl>https://github.com/rqlite/rqlite-dotnet/</PackageProjectUrl>     
+        <PackageProjectUrl>https://github.com/rqlite/rqlite-dotnet/</PackageProjectUrl>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
 </Project>
