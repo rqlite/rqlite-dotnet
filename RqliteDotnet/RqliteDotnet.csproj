@@ -14,6 +14,11 @@
         <Title>Rqlite Dotnet</Title>
         <Description>.NET client for Rqlite - lightweight distributed database</Description>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageProjectUrl>https://github.com/rqlite/rqlite-dotnet/</PackageProjectUrl>     
+        <PackageProjectUrl>https://github.com/rqlite/rqlite-dotnet/</PackageProjectUrl>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
 </Project>
