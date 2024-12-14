@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace RqliteDotnet;
 
-public class RqliteClient : IRqliteClient
+public class RqliteClient : IRqliteClient, IDisposable
 {
     private readonly HttpClient _httpClient;
 
@@ -146,5 +146,10 @@ public class RqliteClient : IRqliteClient
         };
 
         return x;
+    }
+
+    public void Dispose()
+    {
+        _httpClient.Dispose();
     }
 }
