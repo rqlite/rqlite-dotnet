@@ -100,7 +100,7 @@ public class RqliteClientTests
         });
         
         Assert.That(result!.Results!.Count, Is.EqualTo(1));
-        Assert.That(result!.Results[0]!.Values[0]!.Count, Is.EqualTo(2));
+        Assert.That(result!.Results[0]!.Values![0]!.Count, Is.EqualTo(2));
     }
 }
 
