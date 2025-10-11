@@ -102,6 +102,27 @@ public class RqliteClientTests
         Assert.That(result!.Results!.Count, Is.EqualTo(1));
         Assert.That(result!.Results[0]!.Values![0]!.Count, Is.EqualTo(2));
     }
+
+    [Test]
+    public async Task GetNodes_Works()
+    {
+        var client = HttpClientMock.GetNodesClientMock();
+        var rqClient = new RqliteClient("http://localhost:6000", client);
+
+        var result = await rqClient.GetNodes();
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result.Count, Is.EqualTo(2));
+
+        NodeInfo firstValue;
+        var firstNodeExists = result.TryGetValue("shk967khgoip", out firstValue);
+        Assert.That(firstNodeExists, Is.EqualTo(true));
+        Assert.That(firstValue!.Id, Is.EqualTo("shk967khgoip"));
+        
+        NodeInfo secondValue;
+        var secondValueExists = result.TryGetValue("xjhfl76s5hkpq", out secondValue);
+        Assert.That(secondValueExists, Is.EqualTo(true));
+        Assert.That(secondValue!.Id, Is.EqualTo("xjhfl76s5hkpq"));
+    }
 }
 
 public class FooResultDto

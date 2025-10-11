@@ -97,6 +97,20 @@ public class RqliteClient : IRqliteClient, IDisposable
         return result;
     }
 
+    /// <inheritdoc />
+    public async Task<Dictionary<string, NodeInfo>?> GetNodes()
+    {
+        var request = new HttpRequestMessage(HttpMethod.Get, "/nodes");
+        var response = await _httpClient.SendAsync(request);
+
+        var respStr = await response.Content.ReadAsStringAsync();
+
+        if (string.IsNullOrEmpty(respStr)) throw new InvalidOperationException("Node info not available");
+        var result = JsonSerializer.Deserialize<Dictionary<string, NodeInfo>>(respStr);
+        
+        return result;
+    }
+
     private static string BuildQuery<T>(string query, T[] qps) where T : QueryParameter
     {
         var sb = new StringBuilder(typeof(T) == typeof(NamedQueryParameter) ? $"[\"{query}\",{{" : $"[\"{query}\",");
