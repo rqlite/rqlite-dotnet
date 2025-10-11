@@ -70,6 +70,25 @@ public static class HttpClientMock
         return client;
     }
 
+    public static HttpClient GetNodesClientMock()
+    {
+        var fileContent = GetNodesResponseContentns();
+        var handlerMock = new Mock<HttpMessageHandler>();
+        handlerMock
+            .Protected()
+            .Setup<Task<HttpResponseMessage>>("SendAsync", 
+                ItExpr.Is<HttpRequestMessage>(s => s.Method == HttpMethod.Get),
+                ItExpr.IsAny<CancellationToken>())
+            .ReturnsAsync(new HttpResponseMessage()
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(fileContent)
+            });
+        var client = new HttpClient(handlerMock.Object){ BaseAddress = new Uri(BASE_URL) };
+
+        return client;
+    }
+
     private static string GetContents()
     {
         return ReadResource("RqliteDotnet.Test.DbQueryResponse.json");
@@ -78,6 +97,11 @@ public static class HttpClientMock
     private static string GetExecuteResponseContents()
     {
         return ReadResource("RqliteDotnet.Test.DbExecuteResponse.json");
+    }
+
+    private static string GetNodesResponseContentns()
+    {
+        return ReadResource("RqliteDotnet.Test.GetNodesResponse.json");
     }
 
     private static string ReadResource(string resourceName)

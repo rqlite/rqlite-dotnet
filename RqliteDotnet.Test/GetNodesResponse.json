@@ -1,0 +1,24 @@
+{
+  "shk967khgoip": {
+    "id": "shk967khgoip",
+    "api_addr": "http://shk967khgoip:4001",
+    "addr": "shk967khgoip:4002",
+    "version": "v9.1.2",
+    "voter": true,
+    "reachable": true,
+    "leader": true,
+    "time": 8.4e-8,
+    "time_s": "250ns"
+  },
+  "xjhfl76s5hkpq": {
+    "id": "xjhfl76s5hkpq",
+    "api_addr": "http://xjhfl76s5hkpq:4003",
+    "addr": "xjhfl76s5hkpq:4004",
+    "version": "v9.1.2",
+    "voter": true,
+    "reachable": true,
+    "leader": false,
+    "time": 8.4e-8,
+    "time_s": "250ns"
+  }
+}

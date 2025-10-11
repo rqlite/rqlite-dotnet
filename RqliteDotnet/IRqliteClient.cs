@@ -54,4 +54,10 @@ public interface IRqliteClient
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
     Task<QueryResults> QueryParams<T>(string query, CancellationToken cancellationToken, params T[] qps) where T: QueryParameter;
+
+    /// <summary>
+    /// Returns the dictionary of known nodes in the cluster. Key is node id
+    /// </summary>
+    /// <returns></returns>
+    Task<Dictionary<string, NodeInfo>?> GetNodes(CancellationToken cancellationToken);
 }

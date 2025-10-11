@@ -12,7 +12,7 @@ namespace RqliteDotnet.IntegrationTest;
 public class RqliteClientTests
 {
     private const int Port = 4001;
-    private IContainer _container;
+    private IContainer _container = null!;
     private HttpClient _httpClient = null!;
 
     [SetUp]
@@ -85,7 +85,7 @@ public class RqliteClientTests
     record FooDto
     {
         public long Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
         public int Age { get; set; }
     }
 }
