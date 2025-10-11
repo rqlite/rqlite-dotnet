@@ -59,5 +59,5 @@ public interface IRqliteClient
     /// Returns the dictionary of known nodes in the cluster. Key is node id
     /// </summary>
     /// <returns></returns>
-    Task<Dictionary<string, NodeInfo>?> GetNodes();
+    Task<Dictionary<string, NodeInfo>?> GetNodes(CancellationToken cancellationToken);
 }

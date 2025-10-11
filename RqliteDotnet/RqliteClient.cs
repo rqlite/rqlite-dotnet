@@ -98,12 +98,12 @@ public class RqliteClient : IRqliteClient, IDisposable
     }
 
     /// <inheritdoc />
-    public async Task<Dictionary<string, NodeInfo>?> GetNodes()
+    public async Task<Dictionary<string, NodeInfo>?> GetNodes(CancellationToken cancellationToken = default)
     {
         var request = new HttpRequestMessage(HttpMethod.Get, "/nodes");
-        var response = await _httpClient.SendAsync(request);
+        var response = await _httpClient.SendAsync(request, cancellationToken);
 
-        var respStr = await response.Content.ReadAsStringAsync();
+        var respStr = await response.Content.ReadAsStringAsync(cancellationToken);
 
         if (string.IsNullOrEmpty(respStr)) throw new InvalidOperationException("Node info not available");
         var result = JsonSerializer.Deserialize<Dictionary<string, NodeInfo>>(respStr);
