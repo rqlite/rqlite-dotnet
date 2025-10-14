@@ -8,4 +8,6 @@ public class ExecuteResult
     public int LastInsertId { get; set; }
     [JsonPropertyName("rows_affected")]
     public int RowsAffected { get; set; }
+    [JsonPropertyName("error")]
+    public string? Error { get; set; }
 }
