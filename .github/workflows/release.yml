@@ -19,9 +19,8 @@ jobs:
         run: dotnet build
       - name: Pack
         run: |
-          dotnet pack RqliteDotnet/RqliteDotnet.csproj --output out
-          zip -r release.zip out
+          dotnet pack RqliteDotnet/RqliteDotnet.csproj -c Release --output out
       - name: Upload
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
-          files: release.zip
+          files: out/*.nupkg
