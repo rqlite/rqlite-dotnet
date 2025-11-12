@@ -144,7 +144,7 @@ public class RqliteClient : IRqliteClient, IDisposable
         return result.ToString();
     }
 
-    protected object? GetValue(string valType, JsonElement el)
+    protected object? GetValue(string? valType, JsonElement el)
     {
         if (el.ValueKind == JsonValueKind.Null)
         {
