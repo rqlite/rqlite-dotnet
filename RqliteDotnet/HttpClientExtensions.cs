@@ -11,7 +11,7 @@ public static class HttpClientExtensions
 
         response.EnsureSuccessStatusCode();
 
-        var result = JsonSerializer.Deserialize<T>(content, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+        var result = JsonSerializer.Deserialize<T>(content, JsonConfig.DeserializeOptions);
 
         return result!;
     }
