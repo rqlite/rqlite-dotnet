@@ -45,7 +45,7 @@ public class RqliteClient : IRqliteClient, IDisposable
         var r = await _httpClient.GetAsync(url, cancellationToken);
         var str = await r.Content.ReadAsStringAsync(cancellationToken);
 
-        var result = JsonSerializer.Deserialize<QueryResults>(str, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+        var result = JsonSerializer.Deserialize<QueryResults>(str, JsonConfig.DeserializeOptions);
         return result;
     }
 
