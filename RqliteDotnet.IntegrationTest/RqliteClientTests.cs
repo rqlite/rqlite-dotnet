@@ -18,8 +18,7 @@ public class RqliteClientTests
     [SetUp]
     public async Task Setup()
     {
-        _container = new ContainerBuilder()
-            .WithImage("rqlite/rqlite:9.1.2")
+        _container = new ContainerBuilder("rqlite/rqlite:9.1.2")
             .WithPortBinding(Port, true)
             .WithWaitStrategy(Wait.ForUnixContainer().UntilHttpRequestIsSucceeded(r => r.ForPort(Port))
                 .UntilMessageIsLogged("is now Leader", o => o.WithTimeout(TimeSpan.FromSeconds(20))))
