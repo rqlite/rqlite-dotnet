@@ -1,5 +1,4 @@
 using System.Data;
-
 using RqliteDotnet.Dto;
 
 namespace RqliteDotnet;
@@ -9,7 +8,7 @@ public class RqliteOrmClient : RqliteClient, IRqliteOrmClient
     public RqliteOrmClient(string uri, HttpClient? client = null) : base(uri, client) { }
 
     /// <inheritdoc />
-    public async Task<List<T>> Query<T>(string query) where T : new()
+    public async Task<List<T>> Query<T>(string query, CancellationToken cancellationToken = default) where T : new()
     {
         var response = await Query(query);
         if (response?.Results!.Count > 1)
@@ -28,7 +27,7 @@ public class RqliteOrmClient : RqliteClient, IRqliteOrmClient
         return list;
     }
 
-    public async Task<List<U>> QueryParams<T, U>(string query, CancellationToken cancellationToken, params T[] qps)
+    public async Task<List<U>> QueryParams<T, U>(string query, CancellationToken cancellationToken = default, params T[] qps)
         where T : QueryParameter
         where U : new()
     {
