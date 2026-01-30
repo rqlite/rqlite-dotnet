@@ -5,10 +5,10 @@ namespace RqliteDotnet;
 
 public class RqliteOrmClient : RqliteClient, IRqliteOrmClient
 {
-    public RqliteOrmClient(string uri, HttpClient? client = null) : base(uri, client) {}
+    public RqliteOrmClient(string uri, HttpClient? client = null) : base(uri, client) { }
 
     /// <inheritdoc />
-    public async Task<List<T>> Query<T>(string query) where T : new()
+    public async Task<List<T>> Query<T>(string query, CancellationToken cancellationToken = default) where T : new()
     {
         var response = await Query(query);
         if (response?.Results!.Count > 1)
@@ -21,26 +21,13 @@ public class RqliteOrmClient : RqliteClient, IRqliteOrmClient
 
         for (int i = 0; i < res?.Values?.Count; i++)
         {
-            var dto = new T();
-
-            foreach (var prop in typeof(T).GetProperties())
-            {
-                if (res.Columns != null)
-                {
-                    var index = res.Columns.FindIndex(c => c.ToLower() == prop.Name.ToLower());
-                    var val = GetValue(res.Types?[index], res.Values[i][index]);
-
-                    prop.SetValue(dto, val);
-                }
-            }
-
-            list.Add(dto);
+            list.Add(ConstructObjectFromQueryResult<T>(res, i));
         }
 
         return list;
     }
 
-    public async Task<List<U>> QueryParams<T, U>(string query, CancellationToken cancellationToken, params T[] qps)
+    public async Task<List<U>> QueryParams<T, U>(string query, CancellationToken cancellationToken = default, params T[] qps)
         where T : QueryParameter
         where U : new()
     {
@@ -55,22 +42,33 @@ public class RqliteOrmClient : RqliteClient, IRqliteOrmClient
 
         for (int i = 0; i < res.Values?.Count; i++)
         {
-            var dto = new U();
-
-            foreach (var prop in typeof(U).GetProperties())
-            {
-                if (res.Columns != null)
-                {
-                    var index = res.Columns.FindIndex(c => c.ToLower() == prop.Name.ToLower());
-                    var val = GetValue(res.Types?[index], res.Values[i][index]);
-
-                    prop.SetValue(dto, val);
-                }
-            }
-
-            list.Add(dto);
+            list.Add(ConstructObjectFromQueryResult<U>(res, i));
         }
 
         return list;
+    }
+
+    private T ConstructObjectFromQueryResult<T>(QueryResult res, int i) where T : new()
+    {
+        ArgumentNullException.ThrowIfNull(res.Values);
+
+        var dto = new T();
+
+        foreach (var prop in typeof(T).GetProperties())
+        {
+            if (res.Columns != null)
+            {
+                var index = res.Columns.FindIndex(col => string.Equals(col, prop.Name, StringComparison.InvariantCultureIgnoreCase));
+                if (index == -1)
+                {
+                    throw new DataException("No Column for property {prop.Name}");
+                }
+                var val = GetValue(res.Types?[index], res.Values[i][index]);
+
+                prop.SetValue(dto, val);
+            }
+        }
+
+        return dto;
     }
 }
