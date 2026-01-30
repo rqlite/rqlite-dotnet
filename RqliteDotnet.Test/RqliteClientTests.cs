@@ -38,7 +38,7 @@ public class RqliteClientTests
 
 
     [Test]
-    public async Task QueryWithGenerics_ExceptionWhenNoColumnForProperty()
+    public void QueryWithGenerics_ExceptionWhenNoColumnForProperty()
     {
         var client = HttpClientMock.GetQueryMock();
 
@@ -70,7 +70,7 @@ public class RqliteClientTests
     }
 
     [Test]
-    public async Task ParametrizedQueryWithGenerics_ExceptionWhenNoColumnForProperty()
+    public void ParametrizedQueryWithGenerics_ExceptionWhenNoColumnForProperty()
     {
         var client = HttpClientMock.GetParamQueryMock();
 
