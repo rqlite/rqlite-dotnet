@@ -7,13 +7,13 @@ public class NodeInfo
     [JsonPropertyName("id")]
     public string Id { get; set; } = "";
 
-    [JsonPropertyName("api_addr")] 
+    [JsonPropertyName("api_addr")]
     public string ApiAddr { get; set; } = "";
 
-    [JsonPropertyName("addr")] 
+    [JsonPropertyName("addr")]
     public string Addr { get; set; } = "";
 
-    [JsonPropertyName("version")] 
+    [JsonPropertyName("version")]
     public string Version { get; set; } = "";
 
     [JsonPropertyName("voter")]
@@ -28,6 +28,6 @@ public class NodeInfo
     [JsonPropertyName("time")]
     public double Time { get; set; }
 
-    [JsonPropertyName("time_s")] 
+    [JsonPropertyName("time_s")]
     public string TimeS { get; set; } = "";
 }

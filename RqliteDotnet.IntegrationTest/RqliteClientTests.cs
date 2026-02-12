@@ -1,5 +1,3 @@
-using System.Net.Http.Json;
-using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using System.Text.RegularExpressions;
 using DotNet.Testcontainers.Builders;
@@ -9,7 +7,7 @@ using NUnit.Framework;
 namespace RqliteDotnet.IntegrationTest;
 
 [TestFixture]
-public class RqliteClientTests
+public class RqliteClientTests : IDisposable
 {
     private const int Port = 4001;
     private IContainer _container = null!;
@@ -68,7 +66,7 @@ public class RqliteClientTests
                 Encoding.UTF8, "application/json");
         var r = await _httpClient.PostAsync("/db/execute?timings", content);
         Assert.That(r.IsSuccessStatusCode);
-        var insertContent = new StringContent("[ [\"INSERT INTO foo(name, age) VALUES(\\\"jane\\\", 42)\"] ]", 
+        var insertContent = new StringContent("[ [\"INSERT INTO foo(name, age) VALUES(\\\"jane\\\", 42)\"] ]",
             Encoding.UTF8, "application/json");
         var r1 = await _httpClient.PostAsync("/db/execute?timings", insertContent);
         Assert.That(r1.IsSuccessStatusCode);
@@ -81,10 +79,16 @@ public class RqliteClientTests
         Assert.That(result[0].Age, Is.EqualTo(42));
     }
 
-    record FooDto
+    private record FooDto
     {
         public long Id { get; set; }
         public string Name { get; set; } = "";
         public int Age { get; set; }
+    }
+
+    public void Dispose()
+    {
+        if (_httpClient != null)
+            _httpClient.Dispose();
     }
 }

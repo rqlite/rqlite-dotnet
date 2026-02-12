@@ -19,7 +19,7 @@ public static class HttpClientMock
         var handlerMock = new Mock<HttpMessageHandler>();
         handlerMock
             .Protected()
-            .Setup<Task<HttpResponseMessage>>("SendAsync", 
+            .Setup<Task<HttpResponseMessage>>("SendAsync",
                 ItExpr.Is<HttpRequestMessage>(s => s.Method == HttpMethod.Get),
                 ItExpr.IsAny<CancellationToken>())
             .ReturnsAsync(new HttpResponseMessage()
@@ -27,7 +27,7 @@ public static class HttpClientMock
                 StatusCode = HttpStatusCode.OK,
                 Content = new StringContent(fileContent)
             });
-        var client = new HttpClient(handlerMock.Object){ BaseAddress = new Uri(BASE_URL) };
+        var client = new HttpClient(handlerMock.Object) { BaseAddress = new Uri(BASE_URL) };
 
         return client;
     }
@@ -38,7 +38,7 @@ public static class HttpClientMock
         var handlerMock = new Mock<HttpMessageHandler>();
         handlerMock
             .Protected()
-            .Setup<Task<HttpResponseMessage>>("SendAsync", 
+            .Setup<Task<HttpResponseMessage>>("SendAsync",
                 ItExpr.Is<HttpRequestMessage>(s => s.Method == HttpMethod.Post),
                 ItExpr.IsAny<CancellationToken>())
             .ReturnsAsync(new HttpResponseMessage()
@@ -46,18 +46,18 @@ public static class HttpClientMock
                 StatusCode = HttpStatusCode.OK,
                 Content = new StringContent(fileContent)
             });
-        var client = new HttpClient(handlerMock.Object){ BaseAddress = new Uri(BASE_URL) };
+        var client = new HttpClient(handlerMock.Object) { BaseAddress = new Uri(BASE_URL) };
 
         return client;
     }
-    
+
     public static HttpClient GetParamQueryMock()
     {
         var fileContent = GetContents();
         var handlerMock = new Mock<HttpMessageHandler>();
         handlerMock
             .Protected()
-            .Setup<Task<HttpResponseMessage>>("SendAsync", 
+            .Setup<Task<HttpResponseMessage>>("SendAsync",
                 ItExpr.Is<HttpRequestMessage>(s => s.Method == HttpMethod.Post),
                 ItExpr.IsAny<CancellationToken>())
             .ReturnsAsync(new HttpResponseMessage()
@@ -65,7 +65,7 @@ public static class HttpClientMock
                 StatusCode = HttpStatusCode.OK,
                 Content = new StringContent(fileContent)
             });
-        var client = new HttpClient(handlerMock.Object){ BaseAddress = new Uri(BASE_URL) };
+        var client = new HttpClient(handlerMock.Object) { BaseAddress = new Uri(BASE_URL) };
 
         return client;
     }
@@ -76,7 +76,7 @@ public static class HttpClientMock
         var handlerMock = new Mock<HttpMessageHandler>();
         handlerMock
             .Protected()
-            .Setup<Task<HttpResponseMessage>>("SendAsync", 
+            .Setup<Task<HttpResponseMessage>>("SendAsync",
                 ItExpr.Is<HttpRequestMessage>(s => s.Method == HttpMethod.Get),
                 ItExpr.IsAny<CancellationToken>())
             .ReturnsAsync(new HttpResponseMessage()
@@ -84,7 +84,7 @@ public static class HttpClientMock
                 StatusCode = HttpStatusCode.OK,
                 Content = new StringContent(fileContent)
             });
-        var client = new HttpClient(handlerMock.Object){ BaseAddress = new Uri(BASE_URL) };
+        var client = new HttpClient(handlerMock.Object) { BaseAddress = new Uri(BASE_URL) };
 
         return client;
     }

@@ -10,9 +10,9 @@ public interface IRqliteOrmClient : IRqliteClient
     /// <param name="query">Query to execute</param>
     /// <typeparam name="T">Type of result object</typeparam>
     /// <returns></returns>
-    Task<List<T>> Query<T>(string query, CancellationToken cancellationToken) where T: new();
+    Task<List<T>> Query<T>(string query, CancellationToken cancellationToken) where T : new();
 
-    Task<List<U>> QueryParams<T, U>(string query, CancellationToken cancellationToken, params T[] qps) 
-        where T: QueryParameter 
+    Task<List<U>> QueryParams<T, U>(string query, CancellationToken cancellationToken, params T[] qps)
+        where T : QueryParameter
         where U : new();
 }

@@ -36,7 +36,6 @@ public class RqliteClientTests
         Assert.That(queryresults[0].Name, Is.EqualTo("john"));
     }
 
-
     [Test]
     public void QueryWithGenerics_ExceptionWhenNoColumnForProperty()
     {
@@ -107,7 +106,7 @@ public class RqliteClientTests
         var client = HttpClientMock.GetExecuteMock();
 
         var rqClient = new RqliteClient("http://localhost:6000", client);
-        var result = await rqClient.ExecuteParams(new []{
+        var result = await rqClient.ExecuteParams(new[]{
                 ("update foo set name = :newName where name = :oldName"
                     , new [] {
                         new NamedQueryParameter() {Name = "newName", Value = "doe", ParamType = QueryParamType.String}
