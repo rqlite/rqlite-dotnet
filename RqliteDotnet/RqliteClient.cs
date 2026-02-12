@@ -1,6 +1,6 @@
-﻿using RqliteDotnet.Dto;
 using System.Text;
 using System.Text.Json;
+using RqliteDotnet.Dto;
 
 namespace RqliteDotnet;
 
@@ -16,19 +16,19 @@ public class RqliteClient : IRqliteClient, IDisposable
     /// <param name="basicAuthInfo">Basic auth string (username:password) that is base64 encoded and sent in Authorization header. If empty the header is not sent</param>
     public RqliteClient(string uri, HttpClient? client = null, string basicAuthInfo = "")
     {
-        _httpClient = client ?? new HttpClient(){ BaseAddress = new Uri(uri) };
+        _httpClient = client ?? new HttpClient() { BaseAddress = new Uri(uri) };
         if (!string.IsNullOrEmpty(basicAuthInfo))
         {
             var encoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(basicAuthInfo));
             _httpClient.DefaultRequestHeaders.Add("Authorization", $"Basic {encoded}");
         }
     }
-    
+
     public RqliteClient(HttpClient client)
     {
         _httpClient = client ?? throw new ArgumentNullException(nameof(client));
     }
-    
+
     /// <inheritdoc />
     public async Task<string> Ping(CancellationToken cancellationToken = default)
     {
@@ -36,7 +36,7 @@ public class RqliteClient : IRqliteClient, IDisposable
 
         return x.Headers.GetValues("X-Rqlite-Version").FirstOrDefault()!;
     }
-    
+
     /// <inheritdoc />
     public async Task<QueryResults?> Query(string query, ReadLevel level = ReadLevel.Default, CancellationToken cancellationToken = default)
     {
@@ -105,9 +105,10 @@ public class RqliteClient : IRqliteClient, IDisposable
 
         var respStr = await response.Content.ReadAsStringAsync(cancellationToken);
 
-        if (string.IsNullOrEmpty(respStr)) throw new InvalidOperationException("Node info not available");
+        if (string.IsNullOrEmpty(respStr))
+            throw new InvalidOperationException("Node info not available");
         var result = JsonSerializer.Deserialize<Dictionary<string, NodeInfo>>(respStr);
-        
+
         return result;
     }
 
@@ -127,7 +128,8 @@ public class RqliteClient : IRqliteClient, IDisposable
 
     private string GetParameters(DbFlag? flags)
     {
-        if (flags == null) return "";
+        if (flags == null)
+            return "";
         var result = new StringBuilder("");
 
         if ((flags & DbFlag.Timings) == DbFlag.Timings)
@@ -140,7 +142,8 @@ public class RqliteClient : IRqliteClient, IDisposable
             result.Append("&transaction");
         }
 
-        if (result.Length > 0) result[0] = '?';
+        if (result.Length > 0)
+            result[0] = '?';
         return result.ToString();
     }
 

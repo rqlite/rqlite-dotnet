@@ -9,7 +9,7 @@ public static class UrlBuilder
 
         return $"{baseUrl}{data}{readLevelParam}";
     }
-    
+
     private static string GetReadLevel(ReadLevel level)
     {
         var result = level switch

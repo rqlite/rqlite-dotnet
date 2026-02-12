@@ -1,5 +1,4 @@
-﻿using RqliteDotnet;
-using RqliteDotnet.Dto;
+using RqliteDotnet;
 
 namespace RqliteDotnetExample;
 
