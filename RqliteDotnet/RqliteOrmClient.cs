@@ -61,7 +61,7 @@ public class RqliteOrmClient : RqliteClient, IRqliteOrmClient
                 var index = res.Columns.FindIndex(col => string.Equals(col, prop.Name, StringComparison.InvariantCultureIgnoreCase));
                 if (index == -1)
                 {
-                    throw new DataException("No Column for property {prop.Name}");
+                    throw new DataException($"No Column for property {prop.Name}");
                 }
                 var val = GetValue(res.Types?[index], res.Values[i][index]);
 

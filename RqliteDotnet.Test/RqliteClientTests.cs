@@ -42,10 +42,11 @@ public class RqliteClientTests
         var client = HttpClientMock.GetQueryMock();
 
         var rqClient = new RqliteOrmClient("http://localhost:6000", client);
-        Assert.ThrowsAsync<DataException>(async () =>
+        var exception = Assert.ThrowsAsync<DataException>(async () =>
         {
             var _ = await rqClient.Query<FooResultWithExtraColumnDto>("select * from foo", cancellationToken: default);
         });
+        Assert.That(exception.Message, Does.Contain("Age"));
     }
 
     [Test]
@@ -74,7 +75,7 @@ public class RqliteClientTests
         var client = HttpClientMock.GetParamQueryMock();
 
         var rqClient = new RqliteOrmClient("http://localhost:6000", client);
-        Assert.ThrowsAsync<DataException>(async () =>
+        var exception = Assert.ThrowsAsync<DataException>(async () =>
         {
             var _ = await rqClient.QueryParams<NamedQueryParameter, FooResultWithExtraColumnDto>("select * from foo where Name = :name",
             cancellationToken: default,
@@ -85,6 +86,7 @@ public class RqliteClientTests
                 Value = "john"
             });
         });
+        Assert.That(exception.Message, Does.Contain("Age"));
     }
 
     [Test]
